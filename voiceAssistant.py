@@ -28,7 +28,7 @@ getvar()
 chromePath = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
 webbrowser.register('chrome', None, webbrowser.BackgroundBrowser(chromePath))
 
-
+# This is a comment to test if github works
 
 openai.api_key = os.getenv('openai_key') # Replace with your open ai API key
 spotifyUser = os.getenv('spotifyUser') # Replace with your spotify username
