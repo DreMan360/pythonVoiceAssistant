@@ -28,7 +28,7 @@ getvar()
 chromePath = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
 webbrowser.register('chrome', None, webbrowser.BackgroundBrowser(chromePath))
 
-# This is a comment to test if github works
+
 
 openai.api_key = os.getenv('openai_key') # Replace with your open ai API key
 spotifyUser = os.getenv('spotifyUser') # Replace with your spotify username
@@ -90,7 +90,7 @@ def speak(text):
 def shutUp():
     playsound.playsound('empty.mp3')
 
-#define a function for wishing good morning
+#define a function for greeting the user
 def wishMe():
     hour = int(datetime.datetime.now().hour)
     if hour>=0 and hour<12:
@@ -126,14 +126,13 @@ def takeCommand():
 def multipleArguments(string, cut):
     wordList = string.split()
     index = wordList.index(cut)
-    num_words_after = len(wordList[index+1:])
-    print('THIS YOU IDIOT' + str(num_words_after))
+    num_words_after = len(wordList[index+1:]) # find the number of keywords
     finalString = ''
 
-    newList = wordList[-num_words_after:]
+    newList = wordList[-num_words_after:] # create a list of all the keywords
 
-    print(newList)
-    for i in range(num_words_after):
+
+    for i in range(num_words_after): # create a string that combines the keywords
         if i == 0:
             finalString += f'{newList[i]}'
         else:
@@ -152,19 +151,12 @@ def multipleArgumentsButWorse(string, cut):
 
     return newList
 
+# a version of multipleArguments, except it gets the keywords in between two words in the query. It also returns a list instead of a string
 def get_values_between(lst, item1, item2):
   start_index = lst.index(item1)
   end_index = lst.index(item2)
   return lst[start_index+1:end_index]
 
-def sequences_contain_same_items(a, b):
-    for item in a:
-        try:
-            i = b.index(item)
-        except ValueError:
-            return False
-        b = b[:i] + b[i+1:]
-    return not b
 
 wishMe()
 while True:
