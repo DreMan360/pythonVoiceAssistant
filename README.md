@@ -17,6 +17,7 @@ Install requirements.txt
 ```bash
 pip install -r requirements.txt
 ```
+Now you have to replace all the API keys in `voiceAssistant.py` with your own.\
 You can now run the `voiceAssistant.py` file. Speak into your microphone for JCVA to assist you.
 
 ## What can it do?
