@@ -29,7 +29,7 @@ getvar()
 chromePath = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
 webbrowser.register('chrome', None, webbrowser.BackgroundBrowser(chromePath))
 
-
+# checking if github still works
 
 openai.api_key = os.getenv('openai_key') # Replace with your open ai API key
 spotifyUser = os.getenv('spotifyUser') # Replace with your spotify username
@@ -118,7 +118,7 @@ def wishMe():
 
     if name == 'NA':
         name = 'mate'
-        
+
     hour = int(datetime.datetime.now().hour)
     if hour>=0 and hour<12:
         speak(f"Good Morning {name}")
