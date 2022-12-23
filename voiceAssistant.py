@@ -11,11 +11,9 @@ import openai
 from datetime import date
 from os.path import exists
 import spotipy
-import keyboard
-import requests
 from AppOpener import run
 import randfacts
-from dotenv import load_dotenv
+from dotenv import load_dotenv # you don't need this unless you're loading from a .env file
 import os
 import json
 
