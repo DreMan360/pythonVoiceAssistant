@@ -14,6 +14,7 @@ JCVA can do the following:
 * Open Reddit to a specific subreddit
 * Ask OpenAI questions
 * Open applications on your computer
+***
 
 ## License
 
