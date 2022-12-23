@@ -17,6 +17,7 @@ from AppOpener import run
 import randfacts
 from dotenv import load_dotenv
 import os
+import json
 
 def getvar():
     load_dotenv()
@@ -36,6 +37,26 @@ spotifyClientID = os.getenv('spotifyClientID') # Replace with your spotify clien
 spotifyClientSecret = os.getenv('spotifyClientSecret') # Replace with your spotify client secret
 spotify_redirect_uri = 'http://localhost/'
 
+def get_user_data():
+    with open("user_info.json","r") as f:
+        user = json.load(f)
+
+    return user
+
+def open_data():
+    user = get_user_data()
+
+    if 'name' in user:
+        return False  
+    else:
+        user['gender'] = 'NA'
+        user['name'] = 'NA'
+        
+
+
+    with open("user_info.json", "w") as f:
+        json.dump(user,f, indent=4)
+    return True
 
 def openSite(item):
     webbrowser.get('chrome').open(item)
@@ -92,15 +113,23 @@ def shutUp():
 
 #define a function for greeting the user
 def wishMe():
+    data = get_user_data()
+    name = data['name']
+
+    if name == 'NA':
+        name = 'mate'
+        
     hour = int(datetime.datetime.now().hour)
     if hour>=0 and hour<12:
-        speak("Good Morning Sir")
+        speak(f"Good Morning {name}")
 
     elif hour>=12 and hour<18:
-        speak("Good Afternoon Sir")
+        speak(f"Good Afternoon {name}")
 
     else:
-        speak("Good Evening Sir")
+        speak(f"Good Evening {name}")
+
+
 
 #listen for commands
 def takeCommand():
@@ -158,18 +187,74 @@ def get_values_between(lst, item1, item2):
   return lst[start_index+1:end_index]
 
 
+def list_matchup(list1,list2): # function to check if any item in one list matches up with any item in another list
+    match = [False]
+    for i in list1:
+        if i in list2:
+            match = [True,i]
+
+    return match
+
+
 wishMe()
+open_data()
 while True:
-    nameList = ['gervais','jarvis','garvis']
+    data = get_user_data()
+    gender = data['gender']
+
+    if gender == 'NA':
+        gender = 'mate'
+
+    nameList = ['gervais','jarvis','garvis','jervis'] # speech recognition is garbage
     query = takeCommand().lower()
-    gratitudeList = ['No problem sir','My pleasure sir',"You're welcome sir","Have a good day sir"]
+    gratitudeList = [f'No problem {gender}',f'My pleasure {gender}',f"You're welcome {gender}",f"Have a good day {gender}"]
     redditList = ["our slash","r /",'r slash','reddit','read it']
     mcList = ['minecraft','lunar','client']
     browserList = ['chrome','browser','google']
+    genderList = ['male','female','man','woman','non-binary','enby','in b','MB','envy','NB'] # i didn't add a way to input a different gender cause difficult lmao. feel free to add anything to this list, it'll still work the same. also had to add the last few values cause speech recognition is garbage
 
     if any(name in query for name in nameList):
 
-        if 'open youtube' in query:
+        if 'name' in query or "i'm" in query or 'am' in query: # this is the code to put values into the user data
+            query_string = query #there was a bug where it would pick up the "is" in Jarvis, so this is my best solution
+            query = query.split()
+            name = 'NA'
+            gender = 'NA'
+            gender_matchup = list_matchup(query,genderList) # find if the user is declaring their gender
+
+            if gender_matchup != [False]:
+                gender = gender_matchup[1]
+
+
+                if gender in ['man','male']: # decide what to refer to the user as
+                    greeting = 'sir'
+                if gender in ['female','woman']:
+                    greeting = "ma'am"
+                if gender in ['non-binary','enby','in b','MB','envy','NB']:
+                    greeting = 'mate'
+
+                data['gender'] = greeting
+                speak(f"That's good to know {greeting}")
+
+            else:
+                if "i'm" in query: # this turned into an unintentional dad joke machine, if you say "i'm hungry", it'll respond with "nice to meet you, hungry"
+                    name = multipleArguments(query_string, "i'm")
+                elif 'is' in query: # check for if the user said "my name is ..."
+                    name = multipleArguments(query_string, "is")
+
+                elif 'am' in query:
+                    name = multipleArguments(query_string, 'am')
+
+                data['name'] = name
+                
+
+                speak(f"Nice to meet you, {name}")
+
+
+            with open("user_info.json", "w") as f:
+                json.dump(data,f, indent=4)
+            
+        elif 'open youtube' in query:
             if 'to' in query:
                 finalString = multipleArguments(query, 'to')
 
@@ -179,7 +264,7 @@ while True:
 
             speak(random.choice(gratitudeList))
 
-        elif 'search' in query:
+        elif 'search' in query: # annoying bug rn where it adds a slash to the end of every search, even if it isnt a 
             if 'up' in query:
                 finalString = multipleArguments(query, 'up')
             else:
