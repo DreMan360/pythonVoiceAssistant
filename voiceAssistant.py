@@ -34,8 +34,8 @@ webbrowser.register('chrome', None, webbrowser.BackgroundBrowser(chromePath))
 # make everything equal to ' ' if you don't want to use them, make sure to tell the GUI that as well
 openai.api_key = os.getenv('openai_key') # Replace with your open ai API key https://beta.openai.com/account/api-keys
 spotifyUser = os.getenv('spotifyUser') # Replace with your spotify username
-spotifyClientID = os.getenv('spotifyClientID') # Replace with your spotify client ID
-spotifyClientSecret = os.getenv('spotifyClientSecret') # Replace with your spotify client secret
+spotifyClientID = os.getenv('spotifyClientID') # Replace with your spotify client ID https://developer.spotify.com/dashboard/login
+spotifyClientSecret = os.getenv('spotifyClientSecret') # Replace with your spotify client secret https://developer.spotify.com/dashboard/login
 spotify_redirect_uri = 'http://localhost/'
 
 def get_user_data():
