@@ -16,6 +16,7 @@ import randfacts
 from dotenv import load_dotenv # you don't need this unless you're loading from a .env file
 import os
 import json
+import tkinter as tk
 
 def getvar():
     load_dotenv()
@@ -29,7 +30,9 @@ webbrowser.register('chrome', None, webbrowser.BackgroundBrowser(chromePath))
 
 # checking if github still works
 
-openai.api_key = os.getenv('openai_key') # Replace with your open ai API key
+
+# make everything equal to ' ' if you don't want to use them, make sure to tell the GUI that as well
+openai.api_key = os.getenv('openai_key') # Replace with your open ai API key https://beta.openai.com/account/api-keys
 spotifyUser = os.getenv('spotifyUser') # Replace with your spotify username
 spotifyClientID = os.getenv('spotifyClientID') # Replace with your spotify client ID
 spotifyClientSecret = os.getenv('spotifyClientSecret') # Replace with your spotify client secret
@@ -49,6 +52,8 @@ def open_data():
     else:
         user['gender'] = 'NA'
         user['name'] = 'NA'
+        user['spotify'] = False
+        user['openai'] = False
         
 
 
@@ -172,7 +177,6 @@ def multipleArgumentsButWorse(string, cut):
     wordList = string.split()
     index = wordList.index(cut)
     num_words_after = len(wordList[index+1:])
-    print('THIS YOU IDIOT' + str(num_words_after))
 
     newList = wordList[-num_words_after:]
 
@@ -194,9 +198,73 @@ def list_matchup(list1,list2): # function to check if any item in one list match
     return match
 
 
-wishMe()
 open_data()
+
+root = tk.Tk()
+
+var = tk.IntVar()
+
+root.title("Close this window when you're done. Green means disabled, Red means enabled")
+
+root.geometry('720x400')
+
+def spotifyButtonFunc():
+    data = get_user_data()
+    if var.get() == 0:
+        var.set(1)
+        if data['spotify'] == False:
+            spotifyButton.config(bg='red')
+            data['spotify'] = True
+    else:
+        var.set(0)
+        if data['spotify'] == True:
+            spotifyButton.config(bg='green')
+            data['spotify'] = False
+
+
+    with open("user_info.json", "w") as f:
+        json.dump(data,f, indent=4)
+
+def openaiButtonFunc():
+    data = get_user_data()
+    if var.get() == 0:
+        var.set(1)
+        if data['openai'] == False:
+            aiButton.config(bg='red')
+            data['openai'] = True
+    else:
+        var.set(0)
+        if data['openai'] == True:
+            aiButton.config(bg='green')
+            data['openai'] = False
+    
+    with open("user_info.json", "w") as f:
+        json.dump(data,f, indent=4)
+
+
+def find_button_color(type):
+    data = get_user_data()
+
+    if data[type] == False:
+        return 'green'
+
+    else:
+        return 'red'
+
+
+spotifyButton = tk.Button(root, text='Spotify Enable/Disable', bg=find_button_color('spotify'), command=spotifyButtonFunc)
+
+spotifyButton.pack(side = 'top')
+
+aiButton = tk.Button(root, text='OpenAI Enable/Disable', bg=find_button_color('openai'), command=openaiButtonFunc)
+
+aiButton.pack(side = 'top')
+
+root.mainloop()
+wishMe()
+
 while True:
+
     data = get_user_data()
     gender = data['gender']
 
@@ -325,13 +393,13 @@ while True:
             if any(mc in query for mc in mcList):
                 run("Lunar Client")
                 
-            if "spotify" in query:
+            elif "spotify" in query:
                 run("Spotify")
 
-            if any(google in query for google in browserList):
+            elif any(google in query for google in browserList):
                 run("Google Chrome")
 
-            if "steam" in query:
+            elif "steam" in query:
                 run("Steam")
 
             else:
@@ -343,6 +411,8 @@ while True:
             speak(fact)
         else:
             speak("Unrecognized phrase, please repeat sir")
+
+    
         
   
 

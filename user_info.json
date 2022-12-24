@@ -1,4 +1,6 @@
 {
     "gender": "NA",
-    "name": "NA"
+    "name": "NA",
+    "spotify": false,
+    "openai": false
 }
