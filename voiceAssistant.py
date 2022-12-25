@@ -24,6 +24,7 @@ def getvar():
 getvar()
 
 
+
 # This should be the default chrome path, but you may need to change it
 chromePath = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
 webbrowser.register('chrome', None, webbrowser.BackgroundBrowser(chromePath))
@@ -280,11 +281,12 @@ while True:
     mcList = ['minecraft','lunar','client']
     browserList = ['chrome','browser','google']
     genderList = ['male','female','man','woman','non-binary','enby','in b','MB','envy','NB'] # i didn't add a way to input a different gender cause difficult lmao. feel free to add anything to this list, it'll still work the same. also had to add the last few values cause speech recognition is garbage
+    queryList = query.split()
 
     if any(name in query for name in nameList):
 
-        if 'name' in query or "i'm" in query or 'am' in query: # this is the code to put values into the user data
-            query_string = query #there was a bug where it would pick up the "is" in Jarvis, so this is my best solution
+        if 'name' in queryList or "i'm" in queryList or 'am' in queryList: # this is the code to put values into the user data
+            query_string = query
             query = query.split()
             name = 'NA'
             gender = 'NA'
@@ -412,7 +414,9 @@ while True:
             fact = randfacts.get_fact()
             speak(fact)
         else:
-            speak("Unrecognized phrase, please repeat sir")
+            multipleArguments(query, queryList[0])
+            text = activateAI(query)
+            speak(text)
 
     
         
