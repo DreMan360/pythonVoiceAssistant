@@ -1,6 +1,6 @@
 {
-    "gender": "NA",
+    "gender": "sir",
     "name": "NA",
-    "spotify": false,
-    "openai": false
+    "spotify": true,
+    "openai": true
 }

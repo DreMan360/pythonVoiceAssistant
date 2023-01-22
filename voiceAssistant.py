@@ -69,7 +69,7 @@ def openSite(item):
 
 
 def getSong(ID,Secret,URI, context):
-    oauth_object = spotipy.SpotifyOAuth(spotifyClientID,spotifyClientSecret,spotify_redirect_uri)
+    oauth_object = spotipy.SpotifyOAuth(ID,Secret,URI)
     token_dict = oauth_object.get_access_token()
     token = token_dict['access_token']
     spotifyObject = spotipy.Spotify(auth=token)
@@ -274,7 +274,7 @@ while True:
     if gender == 'NA':
         gender = 'mate'
 
-    nameList = ['gervais','jarvis','garvis','jervis'] # speech recognition is garbage
+    nameList = ['service','gervais','jarvis','garvis','jervis'] # speech recognition is garbage
     query = takeCommand().lower()
     gratitudeList = [f'No problem {gender}',f'My pleasure {gender}',f"You're welcome {gender}",f"Have a good day {gender}"]
     redditList = ["our slash","r /",'r slash','reddit','read it']
